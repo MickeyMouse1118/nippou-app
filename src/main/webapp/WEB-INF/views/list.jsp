@@ -11,7 +11,7 @@
 
 <h1>ミッキーマウス</h1>
 
-<button style="font-size:18px; border-radius: 8px; color:red;"><a href="<%= request.getContextPath() %>/reports/new" style="color:black;">新規登録</a></button>
+<button style="font-size:18px; border-radius: 8px; color:red;"><a href="<%= request.getContextPath() %>/reports/new" style="color:black;">SHNKITOROKU</a></button>
 
 <p style="font-size:20px;">全<%= request.getAttribute("reportCount") %>件</p>
 
