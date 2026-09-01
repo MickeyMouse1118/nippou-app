@@ -3,7 +3,6 @@ package com.example.nippou.servlet;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -30,44 +29,41 @@ public class ReportUpdateServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         String reporterName = request.getParameter("reporterName");
         String reportDate = request.getParameter("reportDate");
-        if (reportDate == null || reportDate.trim().isEmpty()) {
-        	request.setAttribute("mode", "new");
-        	request.setAttribute("errorMessage", "対象日を入力してください。");
-        	request.getRequestDispatcher("/WEB-INF/views/form.jsp").forward(request, response);
-            return;
-        }
-        try {
-            LocalDate selectedDate = LocalDate.parse(reportDate);
-            LocalDate today = LocalDate.now();
-
-            if (selectedDate.isAfter(today)) {
-                request.setAttribute("mode", "new");
-                request.setAttribute("errorMessage", "対象日に未来の日付を指定することはできません。");
-                request.getRequestDispatcher("/WEB-INF/views/form.jsp").forward(request, response);
-                return;
-            }
-        } catch (DateTimeParseException e) {
-            request.setAttribute("mode", "new");
-            request.setAttribute("errorMessage", "日付の形式が正しくありません。");
-            request.getRequestDispatcher("/WEB-INF/views/form.jsp").forward(request, response);
-            return;
-        }
-        
         String workContent = request.getParameter("workContent");
-        if (workContent == null || workContent.trim().isEmpty()) {
-        	request.setAttribute("mode", "new");
-        	request.setAttribute("errorMessage" , "作業内容を入力してください");
-        	request.getRequestDispatcher("/WEB-INF/views/form.jsp").forward(request, response);
-        	return;
-        }
         String remarks = request.getParameter("remarks");
-
+        
         Report report = new Report();
         report.setId(id);
         report.setReporterName(reporterName);
         report.setReportDate(reportDate);
         report.setWorkContent(workContent);
         report.setRemarks(remarks);
+        
+        if (reportDate == null || reportDate.trim().isEmpty()) {
+            request.setAttribute("mode", "new");
+            request.setAttribute("errorMessage", "対象日を入力してください。");
+            request.setAttribute("report", report);
+            request.getRequestDispatcher("/WEB-INF/views/form.jsp").forward(request, response);
+            return;
+        }
+        
+        LocalDate selectedDate = LocalDate.parse(reportDate);
+        LocalDate today = LocalDate.now();
+        if (selectedDate.isAfter(today)) {
+            request.setAttribute("mode", "new");
+            request.setAttribute("errorMessage", "対象日に未来の日付を指定することはできません。");
+            request.setAttribute("report", report); 
+            request.getRequestDispatcher("/WEB-INF/views/form.jsp").forward(request, response);
+            return;
+        }
+         
+        if (workContent == null || workContent.trim().isEmpty()) {
+            request.setAttribute("mode", "new");
+            request.setAttribute("errorMessage" , "作業内容を入力してください");
+            request.setAttribute("report", report);
+            request.getRequestDispatcher("/WEB-INF/views/form.jsp").forward(request, response);
+            return;
+        }
 
         try {
             reportDao.update(report);

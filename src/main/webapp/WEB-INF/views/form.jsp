@@ -45,7 +45,7 @@
 
     <p>
         作業内容:<br>
-        <textarea name="workContent" rows="5" cols="50"><%= "edit".equals(mode) ? report.getWorkContent() : "" %></textarea>
+        <textarea name="workContent" rows="5" cols="50"><%= (report != null && report.getWorkContent() != null) ? report.getWorkContent() : "" %></textarea>
     </p>
 
     <p>

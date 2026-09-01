@@ -19,8 +19,8 @@
     <tr><th>報告者</th><td><%= report.getReporterName() %></td></tr>
     <tr><th>対象日</th><td><%= report.getReportDate().replace("-", "/") %></td></tr>
     <tr><th>作業内容</th><td><%= report.getWorkContent() %></td></tr>
-    <tr><th>登録日時</th><td><%= report.getCreatedAt().toString().replace(".0", "") %></td></tr>
-    <tr><th>更新日時</th><td><%= report.getCreatedAt().toString().replace(".0", "") %></td></tr>
+    <tr><th>登録日時</th><td><%= report.getCreatedAt().toString().replace("-", "/").replace(".0", "") %></td></tr>
+    <tr><th>更新日時</th><td><%= report.getUpdatedAt().toString().replace("-", "/").replace(".0", "") %></td></tr>
 	<tr><th>所感</th><td><%= report.getRemarks() == null ? "なし" : report.getRemarks()%></td></tr>
 </table>
 
